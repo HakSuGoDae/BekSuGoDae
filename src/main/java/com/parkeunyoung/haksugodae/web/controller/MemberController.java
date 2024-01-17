@@ -5,6 +5,7 @@ import com.parkeunyoung.haksugodae.web.dto.MemberRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,7 +15,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/register")
-    public String register(MemberRequestDto memberRequestDto, Authentication auth) {
+    public String register(@RequestBody MemberRequestDto memberRequestDto, Authentication auth) {
         return memberService.register(memberRequestDto, auth.getName());
     }
 }
