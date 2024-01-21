@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class BottleController {
@@ -32,8 +34,19 @@ public class BottleController {
         본인 유리병의 일부 정보 반환
      */
     @GetMapping("/bottle")
-    public BottleDto.SummaryList showBottleByMember(Authentication auth) {
+    public List<BottleDto.Summary> showBottleByMember(Authentication auth) {
         return bottleService.showBottleMyMember(auth.getName());
+    }
+
+    /*
+        하나의 유리병에 대한 정보 반환
+        - showOrNot 이 true 이면 paperCraneCnt 정수값
+        - showOrNot 이 false 이면 paperCraneCnt null
+
+     */
+    @GetMapping("/bottle/{bottleId}")
+    public BottleDto.Detail showBottle(@PathVariable Long bottleId) {
+        return bottleService.showBottle(bottleId);
     }
 
 }

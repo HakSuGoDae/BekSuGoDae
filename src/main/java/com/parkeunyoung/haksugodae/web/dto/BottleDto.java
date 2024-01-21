@@ -22,6 +22,7 @@ public class BottleDto {
         private String bottleDesign;
         private String bottleColor;
         private Boolean showOrNot;
+        private Long paperCraneCnt;
     }
 
     @Getter
@@ -41,13 +42,5 @@ public class BottleDto {
         private String title;
         private String bottleDesign;
         private String bottleColor;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class SummaryList {
-        private List<Summary> bottles;
     }
 }

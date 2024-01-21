@@ -9,6 +9,7 @@ import com.parkeunyoung.haksugodae.web.dto.BottleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class BottleService {
                 .bottleColor(detail.getBottleColor())
                 .bottleDesign(detail.getBottleDesign())
                 .showOrNot(detail.getShowOrNot())
+                .paperCraneCnt(0L)
                 .member(member)
                 .build());
 
@@ -47,12 +49,12 @@ public class BottleService {
         return "본인의 것이 아닙니다";
     }
 
-    public BottleDto.SummaryList showBottleMyMember(String name) {
+    public List<BottleDto.Summary> showBottleMyMember(String name) {
         Member member = memberRepository.findByName(name)
                 .orElseThrow(IllegalArgumentException::new);
         List<Bottle> bottles = bottleRepository.findByMember(member);
 
-        BottleDto.SummaryList.SummaryListBuilder listBuilder = BottleDto.SummaryList.builder();
+        List<BottleDto.Summary> summaries = new ArrayList<>();
 
         for (Bottle bottle : bottles) {
             BottleDto.Summary summary = BottleDto.Summary.builder()
@@ -61,8 +63,27 @@ public class BottleService {
                     .bottleColor(bottle.getBottleColor())
                     .bottleDesign(bottle.getBottleDesign())
                     .build();
-            listBuilder.bottles(Collections.singletonList(summary));
+            summaries.add(summary);
         }
-        return listBuilder.build();
+        return summaries;
+    }
+
+    public BottleDto.Detail showBottle(Long bottleId) {
+        Bottle bottle = bottleRepository.findById(bottleId)
+                .orElseThrow(IllegalArgumentException::new);
+
+        BottleDto.Detail.DetailBuilder builder = BottleDto.Detail.builder()
+                .title(bottle.getTitle())
+                .dDay(bottle.getDDay())
+                .bottleDesign(bottle.getBottleDesign())
+                .bottleColor(bottle.getBottleColor())
+                .showOrNot(bottle.getShowOrNot());
+
+        if (bottle.getShowOrNot()) {
+            return builder.paperCraneCnt(bottle.getPaperCraneCnt()).build();
+        } else {
+            return builder.paperCraneCnt(null).build();
+        }
+
     }
 }
