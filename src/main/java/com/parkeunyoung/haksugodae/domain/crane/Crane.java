@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Crane extends BaseTimeEntity {
+public class Crane extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long craneId;
@@ -27,5 +27,9 @@ class Crane extends BaseTimeEntity {
 
     @ManyToOne
     private Bottle bottle;
+
+    public void updateView(Boolean view) {
+        this.view = view;
+    }
 
 }
