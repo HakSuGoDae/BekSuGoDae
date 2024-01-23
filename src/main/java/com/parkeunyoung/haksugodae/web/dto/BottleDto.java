@@ -23,6 +23,7 @@ public class BottleDto {
         private String bottleColor;
         private Boolean showOrNot;
         private Long paperCraneCnt;
+        private Boolean view;
     }
 
     @Getter
@@ -42,5 +43,6 @@ public class BottleDto {
         private String title;
         private String bottleDesign;
         private String bottleColor;
+        private Boolean view;
     }
 }
