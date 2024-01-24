@@ -27,6 +27,13 @@ public class Bottle extends BaseTimeEntity {
     private String bottleColor;
     private Boolean showOrNot;
     private Long paperCraneCnt;
+    private Boolean view;
     @ManyToOne
     private Member member;
+    public void updateView(Boolean view) {
+        this.view = view;
+    }
+    public void increaseCraneCnt() {
+        this.paperCraneCnt++;
+    }
 }

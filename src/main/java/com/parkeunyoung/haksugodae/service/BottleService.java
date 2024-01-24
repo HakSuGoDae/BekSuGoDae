@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,6 +29,7 @@ public class BottleService {
                 .bottleDesign(detail.getBottleDesign())
                 .showOrNot(detail.getShowOrNot())
                 .paperCraneCnt(0L)
+                .view(false)
                 .member(member)
                 .build());
 
@@ -62,6 +62,7 @@ public class BottleService {
                     .title(bottle.getTitle())
                     .bottleColor(bottle.getBottleColor())
                     .bottleDesign(bottle.getBottleDesign())
+                    .view(bottle.getView())
                     .build();
             summaries.add(summary);
         }
@@ -77,7 +78,8 @@ public class BottleService {
                 .dDay(bottle.getDDay())
                 .bottleDesign(bottle.getBottleDesign())
                 .bottleColor(bottle.getBottleColor())
-                .showOrNot(bottle.getShowOrNot());
+                .showOrNot(bottle.getShowOrNot())
+                .view(bottle.getView());
 
         if (bottle.getShowOrNot()) {
             return builder.paperCraneCnt(bottle.getPaperCraneCnt()).build();

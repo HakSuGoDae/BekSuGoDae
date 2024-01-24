@@ -22,6 +22,7 @@ public class CraneService {
     private final BottleRepository bottleRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public String makeCrane(CraneDto.Detail detail) {
         Bottle bottle = bottleRepository.findById(detail.getBottleId())
                 .orElseThrow(IllegalArgumentException::new);
@@ -31,10 +32,11 @@ public class CraneService {
                         .content(detail.getContent())
                         .craneDesign(detail.getCraneDesign())
                         .craneColor(detail.getCraneColor())
-                        .view(false)
                         .bottle(bottle)
                         .build()
         );
+        bottle.increaseCraneCnt();
+        bottle.updateView(true);
         return "생성";
     }
 
@@ -50,7 +52,6 @@ public class CraneService {
                     CraneDto.Summary.builder()
                             .craneId(crane.getCraneId())
                             .title(crane.getTitle())
-                            .view(crane.getView())
                             .build()
             );
         }
@@ -85,8 +86,8 @@ public class CraneService {
                                     .bottleId(bottleId)
                                     .build()
                     );
-                    crane.updateView(true);
                 }
+                bottle.updateView(false);
                 return details;
             }
         }
