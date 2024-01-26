@@ -3,6 +3,7 @@ package com.parkeunyoung.haksugodae.service;
 import com.parkeunyoung.haksugodae.domain.member.Member;
 import com.parkeunyoung.haksugodae.domain.member.MemberRepository;
 import com.parkeunyoung.haksugodae.web.dto.MemberRequestDto;
+import com.parkeunyoung.haksugodae.web.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,14 @@ public class MemberService {
     public Member getMemberByName(String name) {
         return memberRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+    }
+
+    public MemberResponseDto getMember(String name) {
+        Member member = memberRepository.findByName(name)
+                .orElseThrow(IllegalArgumentException::new);
+        return MemberResponseDto.builder()
+                .isLogin(!member.getCreatedDate().equals(member.getModifiedDate()))
+                .nickname(member.getNickname())
+                .build();
     }
 }
