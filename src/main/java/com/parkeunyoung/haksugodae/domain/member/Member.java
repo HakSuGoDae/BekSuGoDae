@@ -23,7 +23,6 @@ public class Member extends BaseTimeEntity {
     private Long memberId;
     private String name;
     private String nickname;
-
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
