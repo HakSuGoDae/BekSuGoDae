@@ -1,8 +1,7 @@
 package com.parkeunyoung.haksugodae.web.controller;
 
 import com.parkeunyoung.haksugodae.service.MemberService;
-import com.parkeunyoung.haksugodae.web.dto.MemberRequestDto;
-import com.parkeunyoung.haksugodae.web.dto.MemberResponseDto;
+import com.parkeunyoung.haksugodae.web.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +16,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/register")
-    public String register(@RequestBody MemberRequestDto memberRequestDto, Authentication auth) {
-        return memberService.register(memberRequestDto, auth.getName());
+    public String register(@RequestBody MemberDto.Request request, Authentication auth) {
+        return memberService.register(request, auth.getName());
     }
 
     @GetMapping("/member")
-    public MemberResponseDto getMember(Authentication auth) {
+    public MemberDto.Response getMember(Authentication auth) {
         return memberService.getMember(auth.getName());
     }
 }
