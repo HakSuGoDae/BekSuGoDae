@@ -49,7 +49,7 @@ public class BottleService {
         return "본인의 것이 아닙니다";
     }
 
-    public List<BottleDto.Summary> showBottleMyMember(String name) {
+    public List<BottleDto.Summary> showBottleByMember(String name) {
         Member member = memberRepository.findByName(name)
                 .orElseThrow(IllegalArgumentException::new);
         List<Bottle> bottles = bottleRepository.findByMember(member);
@@ -73,19 +73,14 @@ public class BottleService {
         Bottle bottle = bottleRepository.findById(bottleId)
                 .orElseThrow(IllegalArgumentException::new);
 
-        BottleDto.Detail.DetailBuilder builder = BottleDto.Detail.builder()
+        return BottleDto.Detail.builder()
                 .title(bottle.getTitle())
                 .dDay(bottle.getDDay())
                 .bottleDesign(bottle.getBottleDesign())
                 .bottleColor(bottle.getBottleColor())
                 .showOrNot(bottle.getShowOrNot())
-                .view(bottle.getView());
-
-        if (bottle.getShowOrNot()) {
-            return builder.paperCraneCnt(bottle.getPaperCraneCnt()).build();
-        } else {
-            return builder.paperCraneCnt(null).build();
-        }
-
+                .view(bottle.getView())
+                .paperCraneCnt(bottle.getPaperCraneCnt())
+                .build();
     }
 }

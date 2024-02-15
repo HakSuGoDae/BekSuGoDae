@@ -35,7 +35,7 @@ public class BottleController {
      */
     @GetMapping("/bottle")
     public List<BottleDto.Summary> showBottleByMember(Authentication auth) {
-        return bottleService.showBottleMyMember(auth.getName());
+        return bottleService.showBottleByMember(auth.getName());
     }
 
     /*
