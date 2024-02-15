@@ -11,4 +11,5 @@ public interface CraneRepository extends Repository<Crane, Long> {
     void save(Crane crane);
     List<Crane> findByBottle(Bottle bottle);
     Page<Crane> findByBottleOrderByCreatedDate(Bottle bottle, Pageable pageable);
+    void delete(Crane crane);
 }
