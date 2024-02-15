@@ -40,9 +40,6 @@ public class BottleController {
 
     /*
         하나의 유리병에 대한 정보 반환
-        - showOrNot 이 true 이면 paperCraneCnt 정수값
-        - showOrNot 이 false 이면 paperCraneCnt null
-
      */
     @GetMapping("/bottle/{bottleId}")
     public BottleDto.Detail showBottle(@PathVariable Long bottleId) {
