@@ -3,6 +3,8 @@ package com.parkeunyoung.haksugodae.service;
 
 import com.parkeunyoung.haksugodae.domain.bottle.Bottle;
 import com.parkeunyoung.haksugodae.domain.bottle.BottleRepository;
+import com.parkeunyoung.haksugodae.domain.crane.Crane;
+import com.parkeunyoung.haksugodae.domain.crane.CraneRepository;
 import com.parkeunyoung.haksugodae.domain.member.Member;
 import com.parkeunyoung.haksugodae.domain.member.MemberRepository;
 import com.parkeunyoung.haksugodae.web.dto.BottleDto;
@@ -18,6 +20,7 @@ public class BottleService {
 
     private final BottleRepository bottleRepository;
     private final MemberRepository memberRepository;
+    private final CraneRepository craneRepository;
 
     public String makeBottle(BottleDto.Detail detail, String name) {
         Member member = memberRepository.findByName(name)
@@ -40,8 +43,13 @@ public class BottleService {
         Member member = memberRepository.findByName(name)
                 .orElseThrow(IllegalArgumentException::new);
         List<Bottle> bottles = bottleRepository.findByMember(member);
+
         for (Bottle bottle : bottles) {
             if (bottle.getBottleId() == id.getBottleId()) {
+                List<Crane> cranes = craneRepository.findByBottle(bottle);
+                for (Crane crane : cranes) {
+                    craneRepository.delete(crane);
+                }
                 bottleRepository.delete(bottle);
                 return "삭제";
             }
