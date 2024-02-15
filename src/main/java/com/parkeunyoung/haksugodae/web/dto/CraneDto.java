@@ -35,5 +35,7 @@ public class CraneDto {
     public static class Summary {
         private Long craneId;
         private String title;
+        private String craneDesign;
+        private String craneColor;
     }
 }

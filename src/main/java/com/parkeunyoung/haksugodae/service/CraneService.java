@@ -8,6 +8,8 @@ import com.parkeunyoung.haksugodae.domain.member.Member;
 import com.parkeunyoung.haksugodae.domain.member.MemberRepository;
 import com.parkeunyoung.haksugodae.web.dto.CraneDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -40,18 +42,20 @@ public class CraneService {
         return "생성";
     }
 
-    public List<CraneDto.Summary> showCraneByAnyone(CraneDto.Id id) {
-        Bottle bottle = bottleRepository.findById(id.getBottleId())
+    public List<CraneDto.Summary> showCraneByAnyone(Long bottleId, Pageable pageable) {
+        Bottle bottle = bottleRepository.findById(bottleId)
                 .orElseThrow(IllegalArgumentException::new);
-        List<Crane> cranes = craneRepository.findByBottle(bottle);
+        Page<Crane> pages = craneRepository.findByBottleOrderByCreatedDate(bottle, pageable);
 
         List<CraneDto.Summary> summaries = new ArrayList<>();
 
-        for (Crane crane : cranes) {
+        for (Crane crane : pages.getContent()) {
             summaries.add(
                     CraneDto.Summary.builder()
                             .craneId(crane.getCraneId())
                             .title(crane.getTitle())
+                            .craneColor(crane.getCraneColor())
+                            .craneDesign(crane.getCraneDesign())
                             .build()
             );
         }
