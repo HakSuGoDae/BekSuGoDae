@@ -16,23 +16,25 @@ public class MemberService {
 
     @Transactional
     public String register(MemberDto.Request request, String name) {
-        Member member = memberRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 없습니다."));
+        Member member = getMemberByRepository(name);
         member.updateNickname(request.getNickname());
         return "변경";
     }
 
     public Member getMemberByName(String name) {
-        return memberRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+        return getMemberByRepository(name);
     }
 
     public MemberDto.Response getMember(String name) {
-        Member member = memberRepository.findByName(name)
-                .orElseThrow(IllegalArgumentException::new);
+        Member member = getMemberByRepository(name);
         return MemberDto.Response.builder()
                 .isLogin(!member.getCreatedDate().equals(member.getModifiedDate()))
                 .nickname(member.getNickname())
                 .build();
+    }
+
+    private Member getMemberByRepository(String name) {
+        return memberRepository.findByName(name)
+                .orElseThrow(IllegalArgumentException::new);
     }
 }
