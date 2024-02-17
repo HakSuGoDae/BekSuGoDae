@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -78,8 +79,14 @@ public class BottleService {
     }
 
     public BottleDto.Detail showBottle(Long bottleId) {
-        Bottle bottle = bottleRepository.findById(bottleId)
-                .orElseThrow(IllegalArgumentException::new);
+        Optional<Bottle> optionalBottle = bottleRepository.findById(bottleId);
+        Bottle bottle;
+
+        if (!optionalBottle.isPresent()) {
+            return null;
+        } else {
+            bottle = optionalBottle.get();
+        }
 
         return BottleDto.Detail.builder()
                 .title(bottle.getTitle())
