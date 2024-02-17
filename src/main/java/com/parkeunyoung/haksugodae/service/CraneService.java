@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,8 +44,15 @@ public class CraneService {
     }
 
     public List<CraneDto.Summary> showCraneByAnyone(Long bottleId, Pageable pageable) {
-        Bottle bottle = bottleRepository.findById(bottleId)
-                .orElseThrow(IllegalArgumentException::new);
+        Optional<Bottle> optionalBottle = bottleRepository.findById(bottleId);
+        Bottle bottle;
+
+        if (!optionalBottle.isPresent()) {
+            return null;
+        } else {
+            bottle = optionalBottle.get();
+        }
+
         Page<Crane> pages = craneRepository.findByBottleOrderByCreatedDate(bottle, pageable);
 
         List<CraneDto.Summary> summaries = new ArrayList<>();
@@ -68,8 +76,14 @@ public class CraneService {
                 .orElseThrow(IllegalArgumentException::new);
 
         // 요청 받은 유리병
-        Bottle requestBottle = bottleRepository.findById(bottleId)
-                .orElseThrow(IllegalArgumentException::new);
+        Bottle requestBottle;
+        Optional<Bottle> optionalRequestBottle = bottleRepository.findById(bottleId);
+
+        if (!optionalRequestBottle.isPresent()) {
+            return null;
+        } else {
+            requestBottle = optionalRequestBottle.get();
+        }
 
         // 본인의 유리병 리스트
         List<Bottle> bottles = bottleRepository.findByMember(member);
