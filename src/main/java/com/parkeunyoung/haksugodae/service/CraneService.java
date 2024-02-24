@@ -85,29 +85,24 @@ public class CraneService {
             requestBottle = optionalRequestBottle.get();
         }
 
-        // 본인의 유리병 리스트
-        List<Bottle> bottles = bottleRepository.findByMember(member);
-
         List<CraneDto.Detail> details = new ArrayList<>();
 
-        for (Bottle bottle : bottles) {
-            if (bottle.getBottleId() == requestBottle.getBottleId()) {
-                List<Crane> cranes = craneRepository.findByBottle(requestBottle);
+        if (requestBottle.getMember().getMemberId() == member.getMemberId()){
+            List<Crane> cranes = craneRepository.findByBottle(requestBottle);
 
-                for (Crane crane : cranes) {
-                    details.add(
-                            CraneDto.Detail.builder()
-                                    .title(crane.getTitle())
-                                    .content(crane.getContent())
-                                    .craneDesign(crane.getCraneDesign())
-                                    .craneColor(crane.getCraneColor())
-                                    .bottleId(bottleId)
-                                    .build()
-                    );
-                }
-                bottle.updateView(false);
-                return details;
+            for (Crane crane : cranes) {
+                details.add(
+                        CraneDto.Detail.builder()
+                                .title(crane.getTitle())
+                                .content(crane.getContent())
+                                .craneDesign(crane.getCraneDesign())
+                                .craneColor(crane.getCraneColor())
+                                .bottleId(bottleId)
+                                .build()
+                );
             }
+            requestBottle.updateView(false);
+            return details;
         }
         return null;
     }
