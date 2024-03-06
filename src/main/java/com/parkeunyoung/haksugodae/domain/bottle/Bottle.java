@@ -23,6 +23,7 @@ public class Bottle extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bottleId;
     private String title;
+    @Temporal(TemporalType.DATE)
     private Date dDay;
     private String bottleDesign;
     private String bottleColor;
