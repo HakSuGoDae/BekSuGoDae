@@ -11,6 +11,7 @@ import com.parkeunyoung.haksugodae.web.dto.BottleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,7 @@ public class BottleService {
         return "생성";
     }
 
+    @Transactional
     public String deleteBottle(BottleDto.Id id, String name) {
         Member member = memberRepository.findByName(name)
                 .orElseThrow(IllegalArgumentException::new);
@@ -66,6 +68,9 @@ public class BottleService {
         List<BottleDto.Summary> summaries = new ArrayList<>();
 
         for (Bottle bottle : bottles) {
+            if (bottle.getLastCraneIdList().isEmpty()) {
+                bottle.updateView(false);
+            }
             BottleDto.Summary summary = BottleDto.Summary.builder()
                     .bottleId(bottle.getBottleId())
                     .title(bottle.getTitle())
@@ -86,6 +91,9 @@ public class BottleService {
             return null;
         } else {
             bottle = optionalBottle.get();
+            if (bottle.getLastCraneIdList().isEmpty()) {
+                bottle.updateView(false);
+            }
         }
 
         return BottleDto.Detail.builder()

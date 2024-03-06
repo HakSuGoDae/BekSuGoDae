@@ -40,7 +40,11 @@ public class BottleController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        bottleService.deleteBottle(id, auth.getName());
+        String s = bottleService.deleteBottle(id, auth.getName());
+
+        if (!s.equals("삭제")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -29,18 +29,43 @@ public class CraneService {
     public String makeCrane(CraneDto.Detail detail) {
         Bottle bottle = bottleRepository.findById(detail.getBottleId())
                 .orElseThrow(IllegalArgumentException::new);
-        craneRepository.save(
-                Crane.builder()
-                        .title(detail.getTitle())
-                        .content(detail.getContent())
-                        .craneDesign(detail.getCraneDesign())
-                        .craneColor(detail.getCraneColor())
-                        .bottle(bottle)
-                        .build()
-        );
+        Crane crane = Crane.builder()
+                .title(detail.getTitle())
+                .content(detail.getContent())
+                .craneDesign(detail.getCraneDesign())
+                .craneColor(detail.getCraneColor())
+                .view(true)
+                .bottle(bottle)
+                .build();
+        craneRepository.save(crane);
+
+        bottle.addLastCraneId(crane.getCraneId());
         bottle.increaseCraneCnt();
         bottle.updateView(true);
         return "생성";
+    }
+
+    @Transactional
+    public CraneDto.Detail showCrane(Long craneId, String name) {
+        Optional<Crane> optionalCrane = craneRepository.findById(craneId);
+        if (!optionalCrane.isPresent()) {
+            return null;
+        }
+        Crane crane = optionalCrane.get();
+        String bottleOwner = crane.getBottle().getMember().getName();
+        if (bottleOwner.equals(name)) {
+            crane.updateView(false);
+            crane.getBottle().removeLastCraneId(craneId);
+            return CraneDto.Detail.builder()
+                    .title(crane.getTitle())
+                    .content(crane.getContent())
+                    .craneDesign(crane.getCraneDesign())
+                    .craneColor(crane.getCraneColor())
+                    .bottleId(crane.getBottle().getBottleId())
+                    .view(crane.getView())
+                    .build();
+        }
+        return null;
     }
 
     public List<CraneDto.Summary> showCraneByAnyone(Long bottleId, Pageable pageable) {
@@ -64,6 +89,7 @@ public class CraneService {
                             .title(crane.getTitle())
                             .craneColor(crane.getCraneColor())
                             .craneDesign(crane.getCraneDesign())
+                            .view(crane.getView())
                             .build()
             );
         }

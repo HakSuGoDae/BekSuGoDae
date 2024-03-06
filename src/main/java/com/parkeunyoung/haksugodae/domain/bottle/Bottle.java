@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Builder
@@ -28,12 +29,24 @@ public class Bottle extends BaseTimeEntity {
     private Boolean showOrNot;
     private Long paperCraneCnt;
     private Boolean view;
-    @ManyToOne
+    @ElementCollection
+    @CollectionTable(name = "LAST_CRANE_ID",
+                    joinColumns = @JoinColumn(name = "BOTTLE_ID"))
+    private List<Long> lastCraneIdList;
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
     public void updateView(Boolean view) {
         this.view = view;
     }
     public void increaseCraneCnt() {
         this.paperCraneCnt++;
+    }
+
+    public void addLastCraneId(Long id) {
+        this.lastCraneIdList.add(id);
+    }
+
+    public void removeLastCraneId(Long id) {
+        this.lastCraneIdList.remove(id);
     }
 }

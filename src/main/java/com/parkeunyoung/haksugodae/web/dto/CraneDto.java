@@ -17,6 +17,7 @@ public class CraneDto {
         private String content;
         private String craneDesign;
         private String craneColor;
+        private Boolean view;
         private Long bottleId;
     }
 
@@ -37,5 +38,6 @@ public class CraneDto {
         private String title;
         private String craneDesign;
         private String craneColor;
+        private Boolean view;
     }
 }

@@ -26,6 +26,19 @@ public class CraneController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("/crane/{craneId}")
+    public ResponseEntity<CraneDto.Detail> showCraneOne(@PathVariable Long craneId, Authentication auth) {
+        if (auth == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        if (craneService.showCrane(craneId, auth.getName()) == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(craneService.showCrane(craneId, auth.getName()));
+    }
+
     /*
         누구나 종이학 제목과 디자인, craneId 에 대해 반환
      */
