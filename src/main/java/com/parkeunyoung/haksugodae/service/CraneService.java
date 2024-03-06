@@ -96,40 +96,4 @@ public class CraneService {
 
         return summaries;
     }
-    @Transactional
-    public List<CraneDto.Detail> showCraneByOwner(Long bottleId, String name) {
-        Member member = memberRepository.findByName(name)
-                .orElseThrow(IllegalArgumentException::new);
-
-        // 요청 받은 유리병
-        Bottle requestBottle;
-        Optional<Bottle> optionalRequestBottle = bottleRepository.findById(bottleId);
-
-        if (!optionalRequestBottle.isPresent()) {
-            return null;
-        } else {
-            requestBottle = optionalRequestBottle.get();
-        }
-
-        List<CraneDto.Detail> details = new ArrayList<>();
-
-        if (requestBottle.getMember().getMemberId() == member.getMemberId()){
-            List<Crane> cranes = craneRepository.findByBottle(requestBottle);
-
-            for (Crane crane : cranes) {
-                details.add(
-                        CraneDto.Detail.builder()
-                                .title(crane.getTitle())
-                                .content(crane.getContent())
-                                .craneDesign(crane.getCraneDesign())
-                                .craneColor(crane.getCraneColor())
-                                .bottleId(bottleId)
-                                .build()
-                );
-            }
-            requestBottle.updateView(false);
-            return details;
-        }
-        return null;
-    }
 }
