@@ -23,6 +23,11 @@ public class Crane extends BaseTimeEntity {
     private String content;
     private String craneDesign;
     private String craneColor;
-    @ManyToOne
+    private Boolean view;
+    @ManyToOne(fetch = FetchType.LAZY)
     private Bottle bottle;
+
+    public void updateView(Boolean view) {
+        this.view = view;
+    }
 }
