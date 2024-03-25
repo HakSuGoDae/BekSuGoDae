@@ -26,7 +26,6 @@ public class Bottle extends BaseTimeEntity {
     @Temporal(TemporalType.DATE)
     private Date dDay;
     private String bottleDesign;
-    private String bottleColor;
     private Boolean showOrNot;
     private Long paperCraneCnt;
     private Boolean view;

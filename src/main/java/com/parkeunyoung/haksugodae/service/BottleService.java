@@ -30,7 +30,6 @@ public class BottleService {
         bottleRepository.save(Bottle.builder()
                 .title(detail.getTitle())
                 .dDay(detail.getDDay())
-                .bottleColor(detail.getBottleColor())
                 .bottleDesign(detail.getBottleDesign())
                 .showOrNot(detail.getShowOrNot())
                 .paperCraneCnt(0L)
@@ -74,7 +73,6 @@ public class BottleService {
             BottleDto.Summary summary = BottleDto.Summary.builder()
                     .bottleId(bottle.getBottleId())
                     .title(bottle.getTitle())
-                    .bottleColor(bottle.getBottleColor())
                     .bottleDesign(bottle.getBottleDesign())
                     .view(bottle.getView())
                     .build();
@@ -100,7 +98,6 @@ public class BottleService {
                 .title(bottle.getTitle())
                 .dDay(bottle.getDDay())
                 .bottleDesign(bottle.getBottleDesign())
-                .bottleColor(bottle.getBottleColor())
                 .showOrNot(bottle.getShowOrNot())
                 .view(bottle.getView())
                 .paperCraneCnt(bottle.getPaperCraneCnt())
